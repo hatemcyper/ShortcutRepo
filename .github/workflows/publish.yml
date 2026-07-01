@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   publish:
-    runs-on: macos-13   # يستخدم macOS Ventura (يدعم shortcuts publish)
+    runs-on: macos-latest   # يستخدم macOS Ventura (يدعم shortcuts publish)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
