@@ -1,4 +1,4 @@
-lname: Get iCloud Link
+name: Get iCloud Link
 
 on: workflow_dispatch
 
