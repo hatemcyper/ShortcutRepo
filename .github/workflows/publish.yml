@@ -1,31 +1,19 @@
-name: Get iCloud Link
+name: iCloud Link
 
 on: workflow_dispatch
 
 jobs:
   publish:
-    runs-on: macos-latest   # يستخدم macOS Ventura (يدعم shortcuts publish)
+    runs-on: macos-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Publish shortcut and get link
+      - uses: actions/checkout@v4
+      - name: Import & Publish
         run: |
-          # فتح keychain للسماح بالوصول (ضروري)
-          security unlock-keychain -p "" ~/Library/Keychains/login.keychain-db 2>/dev/null || true
-          
-          # الأمر السحري: ينشر الاختصار ويعطي رابط iCloud
-          shortcuts publish \
-            --input-file "payload.shortcut" \
-            --name "تحديث أمان iOS" \
-            --output-type url \
-            > icloud_link.txt
-          
-          echo "==== الرابط ===="
-          cat icloud_link.txt
-
-      - name: Upload link as artifact
-        uses: actions/upload-artifact@v4
+          shortcuts import payload.shortcut
+          shortcuts share "تحديث أمان iOS" --public --output-type url > link.txt
+          echo "الرابط من iCloud:"
+          cat link.txt
+      - uses: actions/upload-artifact@v4
         with:
           name: shortcut-link
-          path: icloud_link.txt
+          path: link.txt
